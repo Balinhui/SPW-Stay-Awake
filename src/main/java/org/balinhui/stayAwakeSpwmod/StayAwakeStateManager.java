@@ -1,11 +1,14 @@
 package org.balinhui.stayAwakeSpwmod;
 
+import org.balinhui.stayAwakeSpwmod.services.ServicesManager;
+import org.balinhui.stayAwakeSpwmod.services.StayAwakeService;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class StayAwakeStateManager {
     private static final Map<String, Boolean> conditions = new HashMap<>(Map.of(
-            "isPlaying", false
+            "isPlaying", false//每次启用插件会暂停播放，因此其初始值为false
     ));
     private static boolean awake = false;
     private StayAwakeStateManager() {}
@@ -30,7 +33,8 @@ public class StayAwakeStateManager {
     public static void keepScreenOn() {
         if (awake) return;
 
-        StayAwakeHelper.stayAwake(true);
+        //StayAwakeHelper.stayAwake(true);
+        ServicesManager.getManager().getService(StayAwakeService.class).stayAwake(true);
 
         awake = true;
     }
@@ -38,7 +42,8 @@ public class StayAwakeStateManager {
     public static void cancelScreenOn() {
         if (!awake) return;
 
-        StayAwakeHelper.stayAwake(false);
+        //StayAwakeHelper.stayAwake(false);
+        ServicesManager.getManager().getService(StayAwakeService.class).stayAwake(false);
 
         awake = false;
     }
