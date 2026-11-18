@@ -1,4 +1,4 @@
-package org.balinhui.stayAwakeSpwmod;
+package org.balinhui.stayAwakeSpwmod.tools;
 
 import com.xuncorp.spw.workshop.api.WorkshopApi;
 
