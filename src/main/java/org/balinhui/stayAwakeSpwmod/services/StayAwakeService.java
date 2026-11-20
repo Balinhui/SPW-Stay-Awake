@@ -4,48 +4,49 @@ import org.balinhui.stayAwakeSpwmod.core.Library;
 
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.ValueLayout;
+import java.lang.invoke.MethodHandle;
 
 public class StayAwakeService extends Service {
-    private final Library kernel32;
-    private boolean closed = false;
+    private Library kernel32;
+    private MethodHandle methodCache;
 
     public StayAwakeService() {
-        kernel32 = new Library("kernel32");
+        //kernel32 = new Library("kernel32");
     }
 
     @Override
     public void init() {
-        //Nothing to do
-    }
-
-    public void stayAwake(boolean flag) {
-        if (flag) {
-            kernel32.callVoid(((linker, lib) -> {
-                var function = linker.downcallHandle(
-                        lib.findOrThrow("SetThreadExecutionState"),
-                        FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT)
-                );
-                function.invokeExact(0x00000001 | 0x00000002 | 0x80000000);
-            }));
-        } else {
-            kernel32.callVoid(((linker, lib) -> {
-                var function = linker.downcallHandle(
-                        lib.findOrThrow("SetThreadExecutionState"),
-                        FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT)
-                );
-                function.invokeExact(0x80000000);
-            }));
+        kernel32 = new Library("kernel32");
+        try {
+            methodCache = kernel32.findMethod(
+                    "SetThreadExecutionState",
+                    FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT)
+            );
+        } catch (RuntimeException e) {
+            kernel32.close();
+            kernel32 = null;
+            throw e;
         }
     }
 
-    @Override
-    public void close() {
-        if (closed) return;//防止二次关闭
-        closed = true;
+    private void applyExecutionState(int flags) {
+        kernel32.callVoid(((_, _) -> {
+            if (methodCache != null)
+                methodCache.invokeExact(flags);
+        }));
+    }
 
+    public void stayAwake(boolean flag) {
+        if (isClosed()) return;
+        applyExecutionState(flag ? (0x00000001 | 0x00000002 | 0x80000000) : 0x80000000);
+    }
+
+    @Override
+    public void onClose() {
+        if (kernel32 == null) return;
         try {
-            //使电脑息屏回归到正常状态
-            stayAwake(false);
+            // 使电脑息屏回归到正常状态
+            applyExecutionState(0x80000000);
         } finally {
             kernel32.close();
         }
