@@ -5,7 +5,7 @@ import java.util.List;
 public class ServicesManager {
     private final List<Service> services;
 
-    private static final ServicesManager manager = new ServicesManager();
+    private static ServicesManager manager;
 
     private ServicesManager() {
         services = List.of(
@@ -14,6 +14,9 @@ public class ServicesManager {
     }
 
     public static ServicesManager getManager() {
+        if (manager == null) {
+            manager = new ServicesManager();
+        }
         return manager;
     }
 
@@ -32,5 +35,12 @@ public class ServicesManager {
             }
         }
         return null;
+    }
+
+    public static synchronized void shutdown() {
+        if (manager != null) {
+            manager.closeAll();
+            manager = null;
+        }
     }
 }

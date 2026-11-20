@@ -30,7 +30,7 @@ public class MainPlugin extends SpwPlugin {
     @Override
     public void stop() {
         if (!isWindows) return;
-        ServicesManager.getManager().closeAll();
+        ServicesManager.shutdown();
         Toast.succeed("已关闭功能");
     }
 }
