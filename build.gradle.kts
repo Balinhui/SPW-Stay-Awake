@@ -26,8 +26,8 @@ tasks.test {
 
 spmod {
     PluginClass = "org.balinhui.stayAwakeSpwmod.MainPlugin"
-    PluginId = "org.balinhui.stayAwake-spwmod"
-    PluginVersion = "dev"
+    PluginId = "org.balinhui.stayAwake"
+    PluginVersion = "v0.1.0-dev"
     PluginProvider = "Balinhui"
     PluginName = "防息屏"
     PluginDescription = "防止SPW播放时息屏"
