@@ -8,3 +8,14 @@
 此插件使用了win32 api，所以只能在 Windows 系统上启用。
 
 对于非 Windows 系统，将不会有任何效果。
+
+# 构建
+前置条件：
++ Java 25
++ Gradle 9.6.1
+
+```powershell
+git clone https://github.com/Balinhui/SPW-Stay-Awake.git
+cd .\SPW-Stay-Awake\
+.\gradlew.bat plugin
+```
