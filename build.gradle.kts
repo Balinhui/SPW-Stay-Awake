@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.balinhui"
-version = "1.0-SNAPSHOT"
+version = "v1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -27,7 +27,7 @@ tasks.test {
 spmod {
     PluginClass = "org.balinhui.stayAwakeSpwmod.MainPlugin"
     PluginId = "org.balinhui.stayAwake"
-    PluginVersion = "v0.1.0-dev"
+    PluginVersion = "v1.0.0"
     PluginProvider = "Balinhui"
     PluginName = "防息屏"
     PluginDescription = "防止SPW播放时息屏"
