@@ -31,4 +31,5 @@ spmod {
     PluginProvider = "Balinhui"
     PluginName = "防息屏"
     PluginDescription = "防止SPW播放时息屏"
+    PluginOpenSourceUrl = "https://github.com/Balinhui/SPW-Stay-Awake"
 }
